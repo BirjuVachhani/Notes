@@ -2,6 +2,7 @@ package com.testing.hd.notes
 
 import android.content.Context
 import android.content.Intent
+import android.content.Intent.getIntent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.util.Log
@@ -32,6 +33,20 @@ class CreateNoteFragement : Fragment()
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         Log.d("hey","5")
         val view =  inflater?.inflate(R.layout.createnote_fragment,container,false)
+
+        var vals : String? = activity!!.getIntent().getExtras().getString("Edit");
+
+        if(vals.equals(null))
+        {
+            Toast.makeText(this.activity,"soryy",Toast.LENGTH_LONG).show()
+        }
+        else
+        {
+            Toast.makeText(this.activity,"ok",Toast.LENGTH_LONG).show()
+        }
+
+       // var note : String = activity!!.getIntent().getExtras().getString("note");
+       // var key : String = activity!!.getIntent().getExtras().getString("key");
 
         var edNoteText : EditText = view.findViewById(R.id.note)
         var btnAdd : Button = view.findViewById(R.id.button)

@@ -27,21 +27,22 @@ class MainActivity : AppCompatActivity() {
 
        val rv = findViewById<RecyclerView>(R.id.rvnotes)
 
-        var map = ArrayList<String>()
+        //var map = ArrayList<String>()
+        var map = HashMap<String,String>()
 
         val prefrences = getSharedPreferences("notepref",Context.MODE_PRIVATE)
         val mapkey : MutableMap<String, *>? = prefrences.getAll()
         if (mapkey != null) {
             for (keyname in mapkey.keys) {
                 var note : String =  prefrences.getString(keyname,"")
-                map.add(note)
+                map.put(keyname,note)
                 Log.d("maps",keyname+ " " + note);
             }
         }
 
         rv.layoutManager = LinearLayoutManager(applicationContext)
         rv.itemAnimator =  DefaultItemAnimator()
-        rv.adapter = adapter(map)
+        rv.adapter = adapter(this,map)
 
         btnAddNote.setOnClickListener(View.OnClickListener {
             Log.d("hey","1")
@@ -61,7 +62,5 @@ class MainActivity : AppCompatActivity() {
         transaction.replace(R.id.fragment_holder,createNoteFragement)
         transaction.addToBackStack(null)
         transaction.commit()
-
-
     }
 }
