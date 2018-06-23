@@ -1,55 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <!--<Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Create Note"
-        android:id="@+id/NoteBtn"
-        android:layout_centerHorizontal="true" />-->
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Write a Note:"
-        android:textSize="24sp"
-
-        android:padding="10dp"
-        android:textColor="#008577"/>
-    <View
         android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="#008577"
-        android:layout_below="@+id/textView"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
-        />
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/divider"
+        android:padding="10dp"
+        android:text="Write a Note:"
+        android:textColor="#008577"
+        android:textSize="24sp" />
 
     <EditText
         android:id="@+id/note"
-        android:padding="10dp"
-        android:layout_margin="5dp"
-        android:backgroundTint="#EAEAEA"
-        android:hint="Write notes here..."
-        android:layout_below="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/textView"
+        android:layout_margin="5dp"
+        android:backgroundTint="#EAEAEA"
+        android:clickable="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:focusedByDefault="true"
         android:gravity="start"
-        android:layout_above="@+id/button"
-         />
+        android:hint="Write notes here..."
+        android:padding="10dp" />
 
-    <Button
-        android:id="@+id/button"
-        android:layout_gravity="center"
-        android:layout_alignParentBottom="true"
-        android:layout_width="match_parent"
-        android:textColor="#fff"
-        android:background="#008577"
-        android:textSize="20dp"
-        android:layout_height="wrap_content"
-        android:text="Add" />
 </RelativeLayout>

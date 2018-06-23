@@ -1,39 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/main"
     android:background="#EAEAEA"
     tools:context="com.testing.hd.notes.MainActivity">
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvnotes"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:spanCount="2"
+        tools:layoutManager="com.android.support.v7.widget.StaggeredGridLayoutManager"
+        tools:listitem="@layout/note_card" />
 
-    <android.support.design.widget.FloatingActionButton
+    <ImageView
         android:id="@+id/addNote"
-        android:text="create"
-        android:src="@drawable/ic_add_white_24dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/colorPrimaryDark"
-        android:layout_marginBottom="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
+        android:layout_margin="16dp"
+        android:background="@drawable/fab_bg"
         android:clickable="true"
-        />
-
-    <android.support.v7.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/rvnotes"
-        android:layout_margin="8dp"/>
+        android:padding="16dp"
+        android:src="@drawable/ic_add_white_24dp"
+        android:text="create"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <FrameLayout
+        android:id="@+id/fragment_holder"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/fragment_holder">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    </FrameLayout>
-
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>

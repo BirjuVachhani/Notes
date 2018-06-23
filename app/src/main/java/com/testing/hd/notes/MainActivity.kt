@@ -7,17 +7,24 @@ import android.support.design.widget.FloatingActionButton
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.*
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Button
+import android.widget.ImageView
+import android.widget.Toast
 import com.example.mobiuso.noteapp.R
 import java.util.*
+import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity() {
 
     val manager = supportFragmentManager
-    lateinit var rv : RecyclerView
-    lateinit var btnAddNote: FloatingActionButton
-    lateinit var adap : adapter
+    lateinit var rv: RecyclerView
+    lateinit var btnAddNote: ImageView
+    lateinit var adap: adapter
+    var isNoteMode: Boolean = false
+    lateinit var createNoteFragement: CreateNoteFragement
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,46 +32,68 @@ class MainActivity : AppCompatActivity() {
         btnAddNote = findViewById(R.id.addNote)
         rv = findViewById<RecyclerView>(R.id.rvnotes)
 
-        rv.visibility = View.VISIBLE
-        btnAddNote.visibility = View.VISIBLE
-
         btnAddNote.setOnClickListener(View.OnClickListener {
-            Log.d("hey","1")
-            btnAddNote.visibility = View.GONE
-            rv.visibility = View.GONE
+            Log.d("hey", "1")
             OpenCreateNoteFragment()
         })
 
-        var map = HashMap<String,String>()
-        val prefrences = getSharedPreferences("notepref",Context.MODE_PRIVATE)
-        val mapkey : MutableMap<String, *>? = prefrences.getAll()
-        if (mapkey != null) {
-            for (keyname in mapkey.keys) {
-                var note : String =  prefrences.getString(keyname,"")
-                map.put(keyname,note)
-                Log.d("maps",keyname+ " " + note);
-            }
-        }
-        adap = adapter(this,map,rv,btnAddNote)
+        var map: ArrayList<Note> = getDataFromPref();
+        adap = adapter(this, map)
         //rv.layoutManager = LinearLayoutManager(applicationContext)
-        rv.layoutManager = StaggeredGridLayoutManager(2,1)
-        rv.itemAnimator =  DefaultItemAnimator()
+        rv.layoutManager = StaggeredGridLayoutManager(2, 1)
+        rv.itemAnimator = DefaultItemAnimator()
         rv.adapter = adap
-
     }
 
-    fun OpenCreateNoteFragment()
-    {
-        Log.d("hey","2")
+    fun getDataFromPref(): ArrayList<Note> {
+        var noteList = ArrayList<Note>()
+        val prefrences = getSharedPreferences("notepref", Context.MODE_PRIVATE)
+        var mapkey: MutableMap<String, *>? = prefrences.getAll()
+        var mapSequence: Sequence<String>? = mapkey?.keys?.iterator()?.asSequence()?.sortedDescending()
+        if (mapSequence != null) {
+            for (keyname in mapSequence) {
+//                var note: String = prefrences.getString(keyname, "")
+//                map.put(keyname, note)
+//                Log.d("maps", keyname + " " + note);
+                var str: String = prefrences.getString(keyname, "")
+                var note = Note(keyname, str)
+                noteList.add(note)
+                Log.d("maps", keyname + " " + note);
+            }
+        }
+        return noteList
+    }
+
+    fun OpenCreateNoteFragment() {
+        Log.d("hey", "2")
         val transaction = manager.beginTransaction()
-        val createNoteFragement = CreateNoteFragement()
+        createNoteFragement = CreateNoteFragement()
         val mArgs = Bundle()
         mArgs.putInt("Edit", 0)
         createNoteFragement.setArguments(mArgs)
-        transaction.replace(R.id.fragment_holder,createNoteFragement)
-       // transaction.addToBackStack(   null)
+        transaction.replace(R.id.fragment_holder, createNoteFragement).addToBackStack("frag_new_note")
+        // transaction.addToBackStack(   null)
         transaction.commit()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.toolbar_menu, menu)
+        return isNoteMode
+    }
 
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+
+        when (item?.itemId) {
+            R.id.save -> {
+                Toast.makeText(this, "save button clicked", Toast.LENGTH_SHORT).show()
+                manager.popBackStackImmediate()
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
+    fun onFragClosed() {
+        adap.setData(getDataFromPref());
+    }
 }
