@@ -7,7 +7,7 @@
     android:layout_margin="2dp">
 
     <RelativeLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="#fff"
         android:padding="10dp">
@@ -16,10 +16,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:maxLines="5"
-            android:textSize="20dp"
+            android:textSize="15dp"
             android:text="daily note"
             android:padding="5dp"
             android:id="@+id/notedesc"
+            android:layout_toLeftOf="@+id/delNote"
             />
         <ImageButton
             android:layout_width="wrap_content"

@@ -18,6 +18,8 @@ import java.util.*
 import android.R.id.edit
 import android.content.SharedPreferences
 import android.support.design.widget.FloatingActionButton
+import android.support.v7.widget.DefaultItemAnimator
+import android.support.v7.widget.StaggeredGridLayoutManager
 import android.widget.ImageButton
 
 
@@ -26,12 +28,11 @@ class adapter(context: Context,private var items:HashMap<String,String>,rv: Recy
     var context: Context
     lateinit var rv : RecyclerView
     lateinit var btn : FloatingActionButton
-
+    lateinit var adap: adapter
     init {
         this.rv = rv
         this.btn = btn
         this.context = context
-
     }
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ViewHolder {
         val v = LayoutInflater.from(p0?.context).inflate(R.layout.note_card,p0,false)
@@ -47,7 +48,6 @@ class adapter(context: Context,private var items:HashMap<String,String>,rv: Recy
 
         var str : String = ArrayList<String>(items.values).get(position)
         var key : String = ArrayList<String>(items.keys).get(position)
-        Toast.makeText(context,key, Toast.LENGTH_LONG).show()
             holder?.txtnote?.text = str
 
             holder?.txtnote?.setOnClickListener {
@@ -76,8 +76,13 @@ class adapter(context: Context,private var items:HashMap<String,String>,rv: Recy
             var mynote = context.getSharedPreferences("notepref",Context.MODE_PRIVATE)
             mynote.edit().remove(key).commit()
             items.remove(key)
-            var intent = Intent(context,MainActivity::class.java)
-            context.startActivity(intent)
+            adap = adapter(context,items,rv,btn)
+            rv.layoutManager = StaggeredGridLayoutManager(2,1)
+            rv.itemAnimator =  DefaultItemAnimator()
+            rv.adapter = adap
+            //adap.notifyDataSetChanged()
+            /*var intent = Intent(context,MainActivity::class.java)
+            context.startActivity(intent)*/
         }
 
     }

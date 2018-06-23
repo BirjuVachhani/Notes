@@ -13,17 +13,27 @@
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Write a Note:"
         android:textSize="24sp"
-        android:background="#008577"
+
         android:padding="10dp"
-        android:textColor="#fff"/>
+        android:textColor="#008577"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#008577"
+        android:layout_below="@+id/textView"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        />
 
     <EditText
         android:id="@+id/note"
         android:padding="10dp"
+        android:layout_margin="5dp"
+        android:backgroundTint="#EAEAEA"
         android:hint="Write notes here..."
         android:layout_below="@+id/textView"
         android:layout_width="match_parent"

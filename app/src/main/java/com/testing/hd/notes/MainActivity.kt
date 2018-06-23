@@ -62,7 +62,9 @@ class MainActivity : AppCompatActivity() {
         mArgs.putInt("Edit", 0)
         createNoteFragement.setArguments(mArgs)
         transaction.replace(R.id.fragment_holder,createNoteFragement)
-        transaction.addToBackStack(null)
+       // transaction.addToBackStack(   null)
         transaction.commit()
     }
+
+
 }
