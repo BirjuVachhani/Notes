@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <!--<Button
@@ -12,25 +13,33 @@
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Write a Note:"
         android:textSize="24sp"
-        android:layout_margin="8dp"
-        android:textColor="@android:color/black"/>
+        android:background="#008577"
+        android:padding="10dp"
+        android:textColor="#fff"/>
 
     <EditText
         android:id="@+id/note"
-        android:layout_margin="8dp"
+        android:padding="10dp"
+        android:hint="Write notes here..."
+        android:layout_below="@+id/textView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:maxLines="5"
-        android:inputType="textPersonName" />
+        android:layout_height="match_parent"
+        android:gravity="start"
+        android:layout_above="@+id/button"
+         />
 
     <Button
         android:id="@+id/button"
         android:layout_gravity="center"
-        android:layout_width="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:textColor="#fff"
+        android:background="#008577"
+        android:textSize="20dp"
         android:layout_height="wrap_content"
         android:text="Add" />
-</LinearLayout>
+</RelativeLayout>

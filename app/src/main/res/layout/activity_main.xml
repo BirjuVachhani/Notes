@@ -5,14 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/main"
+    android:background="#EAEAEA"
     tools:context="com.testing.hd.notes.MainActivity">
 
-    <Button
+
+    <android.support.design.widget.FloatingActionButton
         android:id="@+id/addNote"
         android:text="create"
+        android:src="@drawable/ic_add_white_24dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:layout_marginBottom="15dp"
+        android:layout_marginRight="15dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:clickable="true"
@@ -29,19 +34,6 @@
         android:layout_height="match_parent"
         android:id="@+id/fragment_holder">
 
-        <!--<fragment-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:id="@+id/noteFragment"/>-->
-
-
     </FrameLayout>
-<!--
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/fragment_holder2"
-        android:layout_below="@+id/NoteBtn">
-    </FrameLayout>-->
 
 </RelativeLayout>

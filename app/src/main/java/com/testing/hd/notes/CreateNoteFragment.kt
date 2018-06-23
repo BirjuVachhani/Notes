@@ -14,11 +14,18 @@ import android.widget.EditText
 import android.widget.Toast
 import com.example.mobiuso.noteapp.R
 import java.util.concurrent.TimeUnit
+import android.R.id.edit
+import android.content.SharedPreferences
+import android.preference.PreferenceManager
+import android.support.v7.app.AppCompatActivity
+
 
 class CreateNoteFragement : Fragment()
 {
     lateinit var edNoteText: EditText
     lateinit var btnAdd: Button
+    var index: Int = 0
+    lateinit var key : String
 
     override fun onAttach(context: Context?) {
         Log.d("hey","4")
@@ -34,26 +41,39 @@ class CreateNoteFragement : Fragment()
         Log.d("hey","5")
         val view =  inflater?.inflate(R.layout.createnote_fragment,container,false)
 
-        var vals : String? = activity!!.getIntent().getExtras().getString("Edit");
+        var args = getArguments()
+        index = args!!.getInt("Edit", 0)
+        var edNoteText : EditText = view.findViewById(R.id.note)
+        var btnAdd : Button = view.findViewById(R.id.button)
 
-        if(vals.equals(null))
+        if(index == 0)
         {
             Toast.makeText(this.activity,"soryy",Toast.LENGTH_LONG).show()
         }
         else
         {
-            Toast.makeText(this.activity,"ok",Toast.LENGTH_LONG).show()
+            var str : String = args!!.getString("Note")
+            key = args!!.getString("key")
+            edNoteText.setText(str)
+           // var note : String = activity!!.getIntent().getExtras().getString("note");
+            //var key : String = activity!!.getIntent().getExtras().getString("key");
+            Toast.makeText(this.activity,str,Toast.LENGTH_LONG).show()
         }
-
-       // var note : String = activity!!.getIntent().getExtras().getString("note");
-       // var key : String = activity!!.getIntent().getExtras().getString("key");
-
-        var edNoteText : EditText = view.findViewById(R.id.note)
-        var btnAdd : Button = view.findViewById(R.id.button)
 
         btnAdd.setOnClickListener(View.OnClickListener {
             var notes : String = edNoteText.text.toString()
-            AddNotes(notes,view)
+            if(index==1)
+            {
+                var mynote = this.activity!!.getSharedPreferences("notepref",Context.MODE_PRIVATE)
+                var editor = mynote.edit()
+                editor.putString(key,notes)
+                editor.apply()
+                val intent = Intent(this.activity,MainActivity::class.java)
+                startActivity(intent)
+            }else
+            {
+                AddNotes(notes,view)
+            }
         })
         return view
     }
@@ -65,10 +85,8 @@ class CreateNoteFragement : Fragment()
         var editor = mynote.edit()
         editor.putString(timestamp,note)
         editor.apply()
-        Toast.makeText(this.activity,timestamp + " done",Toast.LENGTH_LONG).show()
+        Toast.makeText(this.activity,"Note Added",Toast.LENGTH_LONG).show()
         val intent = Intent(this.activity,MainActivity::class.java)
         startActivity(intent)
     }
-
-
 }
