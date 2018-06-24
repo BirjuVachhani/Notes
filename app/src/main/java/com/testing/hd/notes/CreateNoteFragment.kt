@@ -49,12 +49,9 @@ class CreateNoteFragement : Fragment() {
         }
         edNoteText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
-
             }
-
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
-
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 (activity as MainActivity).isNoteMode = p0?.length != 0
                 (activity as MainActivity).invalidateOptionsMenu()
@@ -64,6 +61,7 @@ class CreateNoteFragement : Fragment() {
     }
 
     fun addNotes() {
+
         var notes: String = edNoteText.text.toString()
         if (index == 1) {
             var mynote = this.activity!!.getSharedPreferences("notepref", Context.MODE_PRIVATE)
@@ -71,7 +69,7 @@ class CreateNoteFragement : Fragment() {
             editor.putString(key, notes)
             editor.apply()
         } else {
-//            var timestamp: String = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()).toString()
+            (activity as MainActivity).size += 1
             val currentTime = System.currentTimeMillis().toLong()
             val timestamp: String = Timestamp(currentTime).time.toString()
             var mynote = this.activity!!.getSharedPreferences("notepref", Context.MODE_PRIVATE)

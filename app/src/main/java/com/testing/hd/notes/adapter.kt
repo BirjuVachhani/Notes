@@ -41,8 +41,6 @@ class adapter(context: Context, private var items: ArrayList<Note>) : RecyclerVi
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        //holder?.txtnote?.text = items.get(position)
-
 //        var str: String = ArrayList<String>(items.values).get(position)
 //        var key: String = ArrayList<String>(items.keys).get(position)
         var str: String = items.get(position).note
@@ -60,29 +58,31 @@ class adapter(context: Context, private var items: ArrayList<Note>) : RecyclerVi
             transaction.replace(R.id.fragment_holder, createNoteFragement)
             transaction.addToBackStack("frag_new_note")
             transaction.commit()
-
-            /*var intent = Intent(context,CreateNoteFragement::class.java)
-                intent.putExtra("Edit",1)
-                intent.putExtra("note",ArrayList<String>(items.values).get(position))
-                intent.putExtra("key",ArrayList<String>(items.keys).get(position))
-                context.startActivity(intent)*/
         }
 
 
         holder?.delbtn?.setOnClickListener {
+            (context as MainActivity).size -= 1
             var mynote = context.getSharedPreferences("notepref", Context.MODE_PRIVATE)
             mynote.edit().remove(key).commit()
             items.remove(items.get(holder.adapterPosition))
             notifyDataSetChanged()
-            /*var intent = Intent(context,MainActivity::class.java)
-            context.startActivity(intent)*/
         }
 
     }
 
     fun setData(notes: ArrayList<Note>) {
         items = notes
+        Log.d("sieqq","1")
+//        notifyDataSetChanged()
+        notifyItemInserted(0)
+    }
+
+    fun updateData(notes: ArrayList<Note>) {
+        Log.d("sieqq","1")
+        items = notes
         notifyDataSetChanged()
+//        notifyItemInserted(0)
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {

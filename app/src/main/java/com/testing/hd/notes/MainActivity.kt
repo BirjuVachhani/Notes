@@ -25,6 +25,8 @@ class MainActivity : AppCompatActivity() {
     lateinit var adap: adapter
     var isNoteMode: Boolean = false
     lateinit var createNoteFragement: CreateNoteFragement
+    var size : Int = 0
+    lateinit var map: ArrayList<Note>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +39,8 @@ class MainActivity : AppCompatActivity() {
             OpenCreateNoteFragment()
         })
 
-        var map: ArrayList<Note> = getDataFromPref();
+        map = getDataFromPref(); //Arraylist get all data key and value
+        size = map.size
         adap = adapter(this, map)
         //rv.layoutManager = LinearLayoutManager(applicationContext)
         rv.layoutManager = StaggeredGridLayoutManager(2, 1)
@@ -52,9 +55,6 @@ class MainActivity : AppCompatActivity() {
         var mapSequence: Sequence<String>? = mapkey?.keys?.iterator()?.asSequence()?.sortedDescending()
         if (mapSequence != null) {
             for (keyname in mapSequence) {
-//                var note: String = prefrences.getString(keyname, "")
-//                map.put(keyname, note)
-//                Log.d("maps", keyname + " " + note);
                 var str: String = prefrences.getString(keyname, "")
                 var note = Note(keyname, str)
                 noteList.add(note)
@@ -65,14 +65,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun OpenCreateNoteFragment() {
-        Log.d("hey", "2")
         val transaction = manager.beginTransaction()
         createNoteFragement = CreateNoteFragement()
         val mArgs = Bundle()
         mArgs.putInt("Edit", 0)
         createNoteFragement.setArguments(mArgs)
         transaction.replace(R.id.fragment_holder, createNoteFragement).addToBackStack("frag_new_note")
-        // transaction.addToBackStack(   null)
         transaction.commit()
     }
 
@@ -82,18 +80,24 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-
         when (item?.itemId) {
             R.id.save -> {
                 Toast.makeText(this, "save button clicked", Toast.LENGTH_SHORT).show()
                 manager.popBackStackImmediate()
             }
         }
-
         return super.onOptionsItemSelected(item)
     }
 
     fun onFragClosed() {
-        adap.setData(getDataFromPref());
+        Log.d("sizess"," " + size + " " + map.size + " " +getDataFromPref().size)
+        if(size == getDataFromPref().size)
+        {
+            adap.updateData(getDataFromPref());
+        }
+        else
+        {
+            adap.setData(getDataFromPref())
+        }
     }
 }
