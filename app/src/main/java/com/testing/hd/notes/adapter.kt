@@ -20,19 +20,20 @@ import android.content.SharedPreferences
 import android.support.design.widget.FloatingActionButton
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.StaggeredGridLayoutManager
+import android.system.Os.bind
 import android.widget.ImageButton
+import kotlinx.android.synthetic.main.note_card.view.*
 import kotlin.collections.ArrayList
 
 class adapter(context: Context, private var items: ArrayList<Note>) : RecyclerView.Adapter<adapter.ViewHolder>() {
     var context: Context
-    lateinit var adap: adapter
 
     init {
         this.context = context
     }
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ViewHolder {
-        val v = LayoutInflater.from(p0?.context).inflate(R.layout.note_card, p0, false)
+        val v = LayoutInflater.from(p0.context).inflate(R.layout.note_card, p0, false)
         return ViewHolder(v)
     }
 
@@ -41,58 +42,48 @@ class adapter(context: Context, private var items: ArrayList<Note>) : RecyclerVi
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-//        var str: String = ArrayList<String>(items.values).get(position)
-//        var key: String = ArrayList<String>(items.keys).get(position)
-        var str: String = items.get(position).note
-        var key: String = items.get(position).key
-        holder?.txtnote?.text = str
 
-        holder?.txtnote?.setOnClickListener {
+        val notedesc: String = items.get(position).note
+        val notekey: String = items.get(position).key
+
+        holder.notedescription?.text = notedesc
+        holder.notedescription?.setOnClickListener {
             val transaction = (context as FragmentActivity).supportFragmentManager.beginTransaction()
             val createNoteFragement = CreateNoteFragement()
             val mArgs = Bundle()
             mArgs.putInt("Edit", 1)
-            mArgs.putString("Note", str)
-            mArgs.putString("key", key)
+            mArgs.putString("Note", notedesc)
+            mArgs.putString("key", notekey)
             createNoteFragement.setArguments(mArgs)
-            transaction.replace(R.id.fragment_holder, createNoteFragement)
+            transaction.replace(R.id.fragment_create_note, createNoteFragement)
             transaction.addToBackStack("frag_new_note")
             transaction.commit()
         }
 
-
-        holder?.delbtn?.setOnClickListener {
-            (context as MainActivity).size -= 1
-            var mynote = context.getSharedPreferences("notepref", Context.MODE_PRIVATE)
-            mynote.edit().remove(key).commit()
+        holder.deleteNoteButton?.setOnClickListener {
+            val manaagerofListFragment = (context as FragmentActivity).supportFragmentManager
+            val  fragment = manaagerofListFragment.findFragmentById(R.id.fragment_recycler) as ListFragment
+            fragment.sizeOfSharedpref -= 1
+            val mynote = context.getSharedPreferences("notepref", Context.MODE_PRIVATE)
+            mynote.edit().remove(notekey).apply()
             items.remove(items.get(holder.adapterPosition))
             notifyDataSetChanged()
         }
-
     }
 
     fun setData(notes: ArrayList<Note>) {
         items = notes
-        Log.d("sieqq","1")
-//        notifyDataSetChanged()
         notifyItemInserted(0)
     }
 
     fun updateData(notes: ArrayList<Note>) {
-        Log.d("sieqq","1")
         items = notes
         notifyDataSetChanged()
-//        notifyItemInserted(0)
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        var txtnote: TextView? = null
-        var delbtn: ImageButton? = null
-
-        init {
-            this.txtnote = view?.findViewById<TextView>(R.id.notedesc)
-            this.delbtn = view?.findViewById<ImageButton>(R.id.delNote)
-        }
+        var notedescription = view.notedesc
+        var deleteNoteButton = view.delNote
     }
 }
 
