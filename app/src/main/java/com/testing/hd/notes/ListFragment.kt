@@ -2,13 +2,11 @@ package com.testing.hd.notes
 
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentActivity
-import android.support.v7.widget.DefaultItemAnimator
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.StaggeredGridLayoutManager
-import android.util.Log
 import android.view.*
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.mobiuso.noteapp.R
 import kotlinx.android.synthetic.main.list_fragment.view.*
 
@@ -19,12 +17,12 @@ class ListFragment : Fragment() {
 
     lateinit var adapterObj: adapter
     var actionmenuMode: Boolean = false
-    var sizeOfSharedpref : Int = 0
+    var sizeOfSharedpref: Int = 0
     lateinit var allNoteMaps: ArrayList<Note>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true);
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -36,7 +34,7 @@ class ListFragment : Fragment() {
             OpenCreateNoteFragment()
         })
 
-        allNoteMaps = getDataFromPref(); //Arraylist get all data key and value
+        allNoteMaps = getDataFromPref() //Arraylist get all data key and value
         sizeOfSharedpref = allNoteMaps.size
         adapterObj = adapter(activity as MainActivity, allNoteMaps)
         rv?.layoutManager = StaggeredGridLayoutManager(2, 1)
@@ -48,7 +46,7 @@ class ListFragment : Fragment() {
     fun getDataFromPref(): ArrayList<Note> {
         val noteList = ArrayList<Note>()
         val prefrences = (activity as MainActivity).getSharedPreferences("notepref", Context.MODE_PRIVATE)
-        val retrieveAllkey: MutableMap<String, *>? = prefrences.getAll()
+        val retrieveAllkey: MutableMap<String, *>? = prefrences.all
         val allKeyInSortedSequence: Sequence<String>? = retrieveAllkey?.keys?.iterator()?.asSequence()?.sortedDescending()
         if (allKeyInSortedSequence != null) {
             for (keyname in allKeyInSortedSequence) {
@@ -61,11 +59,11 @@ class ListFragment : Fragment() {
     }
 
     fun OpenCreateNoteFragment() {
-        val transaction = (context as FragmentActivity).supportFragmentManager.beginTransaction()
-        val createNoteFragement = CreateNoteFragement()
+        val transaction = (context as AppCompatActivity).supportFragmentManager.beginTransaction()
+        val createNoteFragement = CreateNoteFragment()
         val mArgs = Bundle()
         mArgs.putInt("Edit", 0)
-        createNoteFragement.setArguments(mArgs)
+        createNoteFragement.arguments = mArgs
         transaction.replace(R.id.fragment_create_note, createNoteFragement).addToBackStack("frag_new_note")
         transaction.commit()
     }
@@ -74,17 +72,17 @@ class ListFragment : Fragment() {
         if (sizeOfSharedpref == getDataFromPref().size) adapterObj.updateData(getDataFromPref()) else adapterObj.setData(getDataFromPref())
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?,menuInflater: MenuInflater) {
-        if(actionmenuMode){
+    override fun onCreateOptionsMenu(menu: Menu?, menuInflater: MenuInflater) {
+        if (actionmenuMode) {
             menuInflater.inflate(R.menu.toolbar_menu, menu)
-            super.onCreateOptionsMenu(menu,menuInflater);
+            super.onCreateOptionsMenu(menu, menuInflater)
         }
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.save -> {
-                (context as FragmentActivity).supportFragmentManager.popBackStackImmediate()
+                (context as AppCompatActivity).supportFragmentManager.popBackStackImmediate()
             }
         }
         return super.onOptionsItemSelected(item)
