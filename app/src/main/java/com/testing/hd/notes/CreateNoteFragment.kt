@@ -2,8 +2,6 @@ package com.testing.hd.notes
 
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -16,7 +14,7 @@ import kotlinx.android.synthetic.main.createnote_fragment.view.*
 import java.sql.Timestamp
 
 
-class CreateNoteFragement : Fragment() {
+class CreateNoteFragement : androidx.fragment.app.Fragment() {
     lateinit var etNoteText: EditText
     var flagForCreateEdit: Int = 0
     lateinit var editKey: String
@@ -36,7 +34,7 @@ class CreateNoteFragement : Fragment() {
 
         etNoteText.requestFocus()
 
-        val args = getArguments()
+        val args = arguments
         flagForCreateEdit = args!!.getInt("Edit", 0)
 
         if (flagForCreateEdit == 1) {
