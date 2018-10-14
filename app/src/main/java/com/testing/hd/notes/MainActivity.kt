@@ -1,7 +1,7 @@
 package com.testing.hd.notes
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import com.example.mobiuso.noteapp.R
 
 class MainActivity : AppCompatActivity() {
