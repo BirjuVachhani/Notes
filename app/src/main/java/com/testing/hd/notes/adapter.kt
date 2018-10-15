@@ -39,7 +39,7 @@ class adapter(context: Context, private var items: ArrayList<Note>) : RecyclerVi
             mArgs.putInt("Edit", 1)
             mArgs.putString("Note", notedesc)
             mArgs.putString("key", notekey)
-            createNoteFragement.arguments = mArgs
+            createNoteFragement.setArguments(mArgs)
             transaction.replace(R.id.fragment_create_note, createNoteFragement)
             transaction.addToBackStack("frag_new_note")
             transaction.commit()
