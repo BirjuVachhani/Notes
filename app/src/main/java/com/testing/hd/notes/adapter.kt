@@ -5,10 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.RecyclerView
 import com.example.mobiuso.noteapp.R
 import kotlinx.android.synthetic.main.note_card.view.*
 
-class adapter(context: Context, private var items: ArrayList<Note>) : androidx.recyclerview.widget.RecyclerView.Adapter<adapter.ViewHolder>() {
+class adapter(context: Context, private var items: ArrayList<Note>) : RecyclerView.Adapter<adapter.ViewHolder>() {
     var context: Context
 
     init {
@@ -31,20 +33,20 @@ class adapter(context: Context, private var items: ArrayList<Note>) : androidx.r
 
         holder.notedescription?.text = notedesc
         holder.notedescription?.setOnClickListener {
-            val transaction = (context as androidx.fragment.app.FragmentActivity).supportFragmentManager.beginTransaction()
-            val createNoteFragement = CreateNoteFragement()
+            val transaction = (context as AppCompatActivity).supportFragmentManager.beginTransaction()
+            val createNoteFragement = CreateNoteFragment()
             val mArgs = Bundle()
             mArgs.putInt("Edit", 1)
             mArgs.putString("Note", notedesc)
             mArgs.putString("key", notekey)
-            createNoteFragement.arguments = mArgs
+            createNoteFragement.setArguments(mArgs)
             transaction.replace(R.id.fragment_create_note, createNoteFragement)
             transaction.addToBackStack("frag_new_note")
             transaction.commit()
         }
 
         holder.deleteNoteButton?.setOnClickListener {
-            val manaagerofListFragment = (context as androidx.fragment.app.FragmentActivity).supportFragmentManager
+            val manaagerofListFragment = (context as AppCompatActivity).supportFragmentManager
             val fragment = manaagerofListFragment.findFragmentById(R.id.fragment_recycler) as ListFragment
             fragment.sizeOfSharedpref -= 1
             val mynote = context.getSharedPreferences("notepref", Context.MODE_PRIVATE)
@@ -64,7 +66,7 @@ class adapter(context: Context, private var items: ArrayList<Note>) : androidx.r
         notifyDataSetChanged()
     }
 
-    class ViewHolder(view: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(view) {
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var notedescription = view.notedesc
         var deleteNoteButton = view.delNote
     }

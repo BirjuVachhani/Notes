@@ -3,17 +3,21 @@ package com.testing.hd.notes
 import android.content.Context
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.mobiuso.noteapp.R
 import kotlinx.android.synthetic.main.list_fragment.view.*
 
 /**
  * Created by ADMIN on 25-06-2018.
  */
-class ListFragment : androidx.fragment.app.Fragment() {
+class ListFragment : Fragment() {
 
     lateinit var adapterObj: adapter
     var actionmenuMode: Boolean = false
-    var sizeOfSharedpref : Int = 0
+    var sizeOfSharedpref: Int = 0
     lateinit var allNoteMaps: ArrayList<Note>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,8 +37,8 @@ class ListFragment : androidx.fragment.app.Fragment() {
         allNoteMaps = getDataFromPref() //Arraylist get all data key and value
         sizeOfSharedpref = allNoteMaps.size
         adapterObj = adapter(activity as MainActivity, allNoteMaps)
-        rv?.layoutManager = androidx.recyclerview.widget.StaggeredGridLayoutManager(2, 1)
-        rv?.itemAnimator = androidx.recyclerview.widget.DefaultItemAnimator()
+        rv?.layoutManager = StaggeredGridLayoutManager(2, 1)
+        rv?.itemAnimator = DefaultItemAnimator()
         rv?.adapter = adapterObj
         return view
     }
@@ -55,8 +59,8 @@ class ListFragment : androidx.fragment.app.Fragment() {
     }
 
     fun OpenCreateNoteFragment() {
-        val transaction = (context as androidx.fragment.app.FragmentActivity).supportFragmentManager.beginTransaction()
-        val createNoteFragement = CreateNoteFragement()
+        val transaction = (context as AppCompatActivity).supportFragmentManager.beginTransaction()
+        val createNoteFragement = CreateNoteFragment()
         val mArgs = Bundle()
         mArgs.putInt("Edit", 0)
         createNoteFragement.arguments = mArgs
@@ -68,8 +72,8 @@ class ListFragment : androidx.fragment.app.Fragment() {
         if (sizeOfSharedpref == getDataFromPref().size) adapterObj.updateData(getDataFromPref()) else adapterObj.setData(getDataFromPref())
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?,menuInflater: MenuInflater) {
-        if(actionmenuMode){
+    override fun onCreateOptionsMenu(menu: Menu?, menuInflater: MenuInflater) {
+        if (actionmenuMode) {
             menuInflater.inflate(R.menu.toolbar_menu, menu)
             super.onCreateOptionsMenu(menu, menuInflater)
         }
@@ -78,7 +82,7 @@ class ListFragment : androidx.fragment.app.Fragment() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.save -> {
-                (context as androidx.fragment.app.FragmentActivity).supportFragmentManager.popBackStackImmediate()
+                (context as AppCompatActivity).supportFragmentManager.popBackStackImmediate()
             }
         }
         return super.onOptionsItemSelected(item)
